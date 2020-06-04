@@ -30,6 +30,8 @@ namespace MIDI_File_Creator
         byte[] trackDataRoland = { 0x00, 0xF0, 0x0A, 0x41, 0x10, 0x42, 0x12, 0x40, 0x00, 0x7F, 0x00, 0x41, 0xF7, 0x00, 0xB0, 0x07, 0x64, 0x00, 0xB0, 0x0A, 0x40, 0x00, 0xFF, 0x2F, 0x00 };
         byte[] trackDataYamaha = { 0x00, 0xF0, 0x08, 0x43, 0x10, 0x4C, 0x00, 0x00, 0x7E, 0x00, 0xF7, 0x00, 0xB0, 0x07, 0x64, 0x00, 0xB0, 0x0A, 0x40, 0x00, 0xFF, 0x2F, 0x00 };
 
+        readonly UInt16[] timeDivisionValuesTable = { 15360, 7680, 3840, 3072, 1920, 1024, 960, 768, 500, 480, 384, 256, 240, 192, 120, 96, 48, 24 };
+
         public MainForm()
         {
             InitializeComponent();
@@ -53,44 +55,13 @@ namespace MIDI_File_Creator
                 }
                 else
                 {
-                    UInt16 timeDivisionValue = 480;
+                    // Set the default time division value to 1920 ticks per bar if no item is selected.
+                    if (TimeDivisionOptions.SelectedIndex < 0)
+                    {
+                        TimeDivisionOptions.SelectedIndex = 9;
+                    }
 
-                    if (TimeDivisionOptions.SelectedIndex == 0)
-                        timeDivisionValue = 15360;
-                    if (TimeDivisionOptions.SelectedIndex == 1)
-                        timeDivisionValue = 7680;
-                    if (TimeDivisionOptions.SelectedIndex == 2)
-                        timeDivisionValue = 3840;
-                    if (TimeDivisionOptions.SelectedIndex == 3)
-                        timeDivisionValue = 3072;
-                    if (TimeDivisionOptions.SelectedIndex == 4)
-                        timeDivisionValue = 1920;
-                    if (TimeDivisionOptions.SelectedIndex == 5)
-                        timeDivisionValue = 1024;
-                    if (TimeDivisionOptions.SelectedIndex == 6)
-                        timeDivisionValue = 960;
-                    if (TimeDivisionOptions.SelectedIndex == 7)
-                        timeDivisionValue = 768;
-                    if (TimeDivisionOptions.SelectedIndex == 8)
-                        timeDivisionValue = 500;
-                    if (TimeDivisionOptions.SelectedIndex == 9)
-                        timeDivisionValue = 480;
-                    if (TimeDivisionOptions.SelectedIndex == 10)
-                        timeDivisionValue = 384;
-                    if (TimeDivisionOptions.SelectedIndex == 11)
-                        timeDivisionValue = 256;
-                    if (TimeDivisionOptions.SelectedIndex == 12)
-                        timeDivisionValue = 240;
-                    if (TimeDivisionOptions.SelectedIndex == 13)
-                        timeDivisionValue = 192;
-                    if (TimeDivisionOptions.SelectedIndex == 14)
-                        timeDivisionValue = 120;
-                    if (TimeDivisionOptions.SelectedIndex == 15)
-                        timeDivisionValue = 96;
-                    if (TimeDivisionOptions.SelectedIndex == 16)
-                        timeDivisionValue = 48;
-                    if (TimeDivisionOptions.SelectedIndex == 17)
-                        timeDivisionValue = 24;
+                    UInt16 timeDivisionValue = timeDivisionValuesTable[TimeDivisionOptions.SelectedIndex];
 
                     using (FileStream fs = new FileStream(OutputPathBox.Text, FileMode.Append, FileAccess.Write))
                     {
