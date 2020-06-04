@@ -1,5 +1,7 @@
 # MIDI File Creator
 
+<div style="text-align: center;"><img src="program_screenshot.png"></div>
+
 Overview
 ------------
 
